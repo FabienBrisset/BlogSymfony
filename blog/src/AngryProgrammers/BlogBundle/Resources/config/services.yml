@@ -1,0 +1,4 @@
+services:
+#    angry_programmers_blog.example:
+#        class: AngryProgrammers\BlogBundle\Example
+#        arguments: [@service_id, "plain_value", %parameter%]

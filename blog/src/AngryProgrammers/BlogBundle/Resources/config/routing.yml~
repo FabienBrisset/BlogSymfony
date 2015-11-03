@@ -1,0 +1,3 @@
+angry_programmers_blog_homepage:
+    path:     /blog
+    defaults: { _controller: AngryProgrammersBlogBundle:Blog:index }
