@@ -1,5 +1,8 @@
 Commandes Symfony : 
 
+php app/console server:run 
+-> http://localhost:8000
+
 php app/console generate:bundle
 Pseudo\NomBundle (garder le suffixe Bundle)
 Entrée
@@ -22,3 +25,5 @@ php app/console generate:doctrine:entities SirGladiusTestBundle:Article
 php app/console doctrine:fixtures:load
 
 php app/console doctrine:generate:form SirGladiusTestBundle:Article
+
+php app/console fos:user:promote <pseudo> ROLE_SUPER_ADMIN
