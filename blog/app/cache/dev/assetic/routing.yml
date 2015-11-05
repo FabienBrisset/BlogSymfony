@@ -1,5 +1,0 @@
-_assetic:
-    resource: .
-    type: assetic
-_app:
-    resource: 'D:\gitWindows\BlogSymfony\blog\app/config/routing_dev.yml'
