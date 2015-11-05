@@ -1,0 +1,7 @@
+856cd5,127.0.0.1,GET,http://localhost/BlogSymfony/blog/web/app_dev.php/,1446729340,,200
+e0d848,127.0.0.1,GET,http://localhost/BlogSymfony/blog/web/app_dev.php/register,1446729350,,301
+cdb4c3,127.0.0.1,GET,http://localhost/BlogSymfony/blog/web/app_dev.php/register/,1446729350,,200
+4297ba,127.0.0.1,GET,http://localhost/BlogSymfony/blog/web/app_dev.php/login,1446729354,,200
+125b08,127.0.0.1,GET,http://localhost/BlogSymfony/blog/web/app_dev.php/login,1446729356,,200
+943ef2,127.0.0.1,POST,http://localhost/BlogSymfony/blog/web/app_dev.php/register/,1446729381,,302
+ade643,127.0.0.1,GET,http://localhost/BlogSymfony/blog/web/app_dev.php/register/confirmed,1446729381,,200
