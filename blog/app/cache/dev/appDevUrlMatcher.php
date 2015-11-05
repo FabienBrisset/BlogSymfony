@@ -136,6 +136,11 @@ class appDevUrlMatcher extends Symfony\Bundle\FrameworkBundle\Routing\Redirectab
             return array (  '_controller' => 'AngryProgrammers\\BlogBundle\\Controller\\BlogController::indexAction',  '_route' => 'angry_programmers_blog_homepage',);
         }
 
+        // angry_programmers_blog_post
+        if (0 === strpos($pathinfo, '/post') && preg_match('#^/post/(?P<id>[^/]++)$#s', $pathinfo, $matches)) {
+            return $this->mergeDefaults(array_replace($matches, array('_route' => 'angry_programmers_blog_post')), array (  '_controller' => 'AngryProgrammers\\BlogBundle\\Controller\\BlogController::postAction',));
+        }
+
         // homepage
         if (rtrim($pathinfo, '/') === '') {
             if (substr($pathinfo, -1) !== '/') {
