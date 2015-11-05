@@ -5,3 +5,8 @@ angry_programmers_blog_homepage:
 angry_programmers_blog_post:
     path: /post/{id}
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:post }
+
+angry_programmers_blog_admin:
+    path: /admin
+    defaults: { _controller: AngryProgrammersBlogBundle:Blog:admin }
+

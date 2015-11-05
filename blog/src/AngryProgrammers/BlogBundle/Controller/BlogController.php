@@ -15,4 +15,9 @@ class BlogController extends Controller
     {
         return $this->render('AngryProgrammersBlogBundle:Blog:post.html.twig', array('id' => $id));
     }
+
+    	public function adminAction()
+    {
+        return $this->render('AngryProgrammersBlogBundle:Blog:admin.html.twig');
+    }
 }
