@@ -57,9 +57,7 @@ class Billet
     private $photo;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="auteur", type="string", length=255)
+     * @ORM\ManyToOne(targetEntity="AngryProgrammers\BlogBundle\Entity\User", cascade={"persist"})
      */
     private $auteur;
 
@@ -197,11 +195,11 @@ class Billet
     /**
      * Set auteur
      *
-     * @param string $auteur
+     * @param \AngryProgrammers\BlogBundle\Entity\User $auteur
      *
      * @return Billet
      */
-    public function setAuteur($auteur)
+    public function setAuteur(\AngryProgrammers\BlogBundle\Entity\User $auteur = null)
     {
         $this->auteur = $auteur;
     
@@ -211,7 +209,7 @@ class Billet
     /**
      * Get auteur
      *
-     * @return string
+     * @return \AngryProgrammers\BlogBundle\Entity\User
      */
     public function getAuteur()
     {
