@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  *
  * @ORM\Table()
  * @ORM\Entity(repositoryClass="AngryProgrammers\BlogBundle\Entity\BilletRepository")
+ * @ORM\HasLifecycleCallbacks
  */
 class Billet
 {
@@ -63,17 +64,30 @@ class Billet
      */
     private $auteur;
 
+	/*** UPLOAD IMAGE : Choix d'automatisation des taches en fonction d'évènements ****/
+	
 	// attribut image pour uploader l'image.
 	private $image;
+	
+	// On ajoute cet attribut pour y stocker le nom de la photo temporairement
+	private $tempPhoto;
 	
 	public function getImage()
 	{
 		return $this->image;
 	}
 
-	public function setImage(UploadedFile $image = null)
+	public function setImage(UploadedFile $image)
 	{
+		if ($this->photo !== null)
+		{
+			$this->tempPhoto = $this->photo;
+		}
+		
 		$this->image = $image;
+		
+		$this->photo = null;
+		
 	}
 	
 	public function getUploadDir()
@@ -88,6 +102,68 @@ class Billet
 		return __DIR__.'/../../../../web/'.$this->getUploadDir();
 	}
 	
+	/**
+	* @ORM\PrePersist()
+	* @ORM\PreUpdate()
+	*/
+	public function preUpload()
+	{
+		// Si jamais il n'y a pas d'image (champ facultatif)
+		if ($this->image === null) {
+			return;
+		}
+
+			
+		
+		// initialisation attribut photo avec le nom du fichier
+		$this->photo = $this->image->getClientOriginalName();
+	}
+
+	/**
+	* @ORM\PostPersist()
+	* @ORM\PostUpdate()
+	*/
+	public function upload()
+	{	
+		// Si jamais il n'y a pas d'image (champ facultatif)
+		if ($this->image === null) {
+			return;
+		}
+
+		// Si on avait un ancien fichier, on le supprime
+		if (null !== $this->tempPhoto) {
+			$oldImage = $this->getUploadRootDir().'/'.$this->id.'_'.$this->tempPhoto;
+			if (file_exists($oldImage)) {
+				unlink($oldImage);
+			}
+		}
+		
+
+		// On déplace le fichier envoyé dans le répertoire de notre choix
+		$this->image->move($this->getUploadRootDir(), $this->id.'_'.$this->photo);
+	}
+
+	/**
+	* @ORM\PreRemove()
+	*/
+	public function preRemoveUpload()
+	{
+		// On sauvegarde temporairement le nom du fichier, car il dépend de l'id
+		$this->tempPhoto = $this->getUploadRootDir().'/'.$this->id.'_'.$this->photo;
+	}
+
+	/**
+	* @ORM\PostRemove()
+	*/
+	public function removeUpload()
+	{
+		// En PostRemove, on n'a pas accès à l'id, on utilise notre nom sauvegardé
+		if (file_exists($this->tempPhoto)) {
+			// On supprime le fichier
+			unlink($this->tempPhoto);
+		}
+	}
+
     /**
      * Get id
      *

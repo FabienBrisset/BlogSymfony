@@ -41,8 +41,7 @@ class BlogController extends Controller
 			//obtenir la date courante			
 			$billet->setDate(new \Datetime());
 			//Slug ???
-			$billet->setSlug(""); 
-			
+			$billet->setSlug("");
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($billet);
 			$em->flush();
