@@ -3,6 +3,9 @@
 namespace AngryProgrammers\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use AngryProgrammers\BlogBundle\Entity\Billet;
+use AngryProgrammers\BlogBundle\Form\BilletType;
+use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends Controller
 {
@@ -16,8 +19,35 @@ class BlogController extends Controller
         return $this->render('AngryProgrammersBlogBundle:Blog:post.html.twig', array('id' => $id));
     }
 
-    	public function adminAction()
+    public function adminAction()
     {
         return $this->render('AngryProgrammersBlogBundle:Blog:admin.html.twig');
     }
+	
+	public function ajoutBilletAction(Request $request)
+	{
+		$billet = new Billet();
+
+		//instanciation de l'objet formulaire dans lequel on ajoute le bouton submit d'ajout du billet
+		$form = $this->createForm(new BilletType(), $billet)
+			->add('Ajouter le billet', 'submit');
+		
+		//([^\s]+(\.(?i)(jpg|png|gif|bmp))$) pour validation d'une image à uploader
+
+		if ($form->handleRequest($request)->isValid()) {
+			
+			$billet->setDate(new \Datetime());
+			$billet->setSlug(""); // Slug ???
+			
+			$em = $this->getDoctrine()->getManager();
+			$em->persist($billet);
+			$em->flush();
+
+			$request->getSession()->getFlashBag()->add('notice', 'Billet bien enregistré.');
+
+			return $this->redirect($this->generateUrl('angry_programmers_blog_admin'));
+		}
+
+		return $this->render('AngryProgrammersBlogBundle:Blog:ajoutBillet.html.twig', array('form' => $form->createView()));
+	}
 }

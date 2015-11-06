@@ -10,3 +10,6 @@ angry_programmers_blog_admin:
     path: /admin
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:admin }
 
+angry_programmers_blog_ajoutBillet:
+    path: /ajoutBillet
+    defaults: { _controller: AngryProgrammersBlogBundle:Blog:ajoutBillet }
