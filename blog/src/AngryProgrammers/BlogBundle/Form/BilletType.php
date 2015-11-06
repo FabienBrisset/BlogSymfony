@@ -17,7 +17,7 @@ class BilletType extends AbstractType
         $builder
             ->add('titre', 'text')
             ->add('contenu', 'textarea')
-            ->add('photo', 'file', array('required' => false));
+            ->add('image', 'file', array('required' => false));
         ;
     }
     

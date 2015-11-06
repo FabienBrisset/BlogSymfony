@@ -24,6 +24,7 @@ class BlogController extends Controller
         return $this->render('AngryProgrammersBlogBundle:Blog:admin.html.twig');
     }
 	
+	//se reporter à "http://localhost:8000/ajoutBillet" (droit réservé à l'admin uniquement)
 	public function ajoutBilletAction(Request $request)
 	{
 		$billet = new Billet();
@@ -35,9 +36,12 @@ class BlogController extends Controller
 		//([^\s]+(\.(?i)(jpg|png|gif|bmp))$) pour validation d'une image à uploader
 
 		if ($form->handleRequest($request)->isValid()) {
-			
+			//obtenir l'utilisateur courant
+			$billet->setAuteur($this->getUser());
+			//obtenir la date courante			
 			$billet->setDate(new \Datetime());
-			$billet->setSlug(""); // Slug ???
+			//Slug ???
+			$billet->setSlug(""); 
 			
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($billet);

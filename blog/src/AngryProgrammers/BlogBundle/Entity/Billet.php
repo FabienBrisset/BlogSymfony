@@ -4,6 +4,8 @@ namespace AngryProgrammers\BlogBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 /**
  * Billet
  *
@@ -61,7 +63,31 @@ class Billet
      */
     private $auteur;
 
+	// attribut image pour uploader l'image.
+	private $image;
+	
+	public function getImage()
+	{
+		return $this->image;
+	}
 
+	public function setImage(UploadedFile $image = null)
+	{
+		$this->image = $image;
+	}
+	
+	public function getUploadDir()
+	{
+		// On retourne le chemin relatif vers l'image pour un navigateur (relatif au répertoire /web donc)
+		return 'uploads/img';
+	}
+
+	protected function getUploadRootDir()
+	{
+		// On retourne le chemin relatif vers l'image pour notre code PHP
+		return __DIR__.'/../../../../web/'.$this->getUploadDir();
+	}
+	
     /**
      * Get id
      *
