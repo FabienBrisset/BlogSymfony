@@ -33,15 +33,16 @@ class BlogController extends Controller
 		$form = $this->createForm(new BilletType(), $billet)
 			->add('Ajouter le billet', 'submit');
 		
-		//([^\s]+(\.(?i)(jpg|png|gif|bmp))$) pour validation d'une image à uploader
+		
 
 		if ($form->handleRequest($request)->isValid()) {
 			//obtenir l'utilisateur courant
 			$billet->setAuteur($this->getUser());
 			//obtenir la date courante			
 			$billet->setDate(new \Datetime());
-			//Slug ???
-			$billet->setSlug("");
+			//création du slug
+			$billet->setSlug(str_replace(' ', '_', $billet->getTitre()));
+			
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($billet);
 			$em->flush();

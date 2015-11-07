@@ -63,7 +63,9 @@ class Billet
      * @ORM\ManyToOne(targetEntity="AngryProgrammers\BlogBundle\Entity\User", cascade={"persist"})
      */
     private $auteur;
-
+	
+	
+	
 	/*** UPLOAD IMAGE : Choix d'automatisation des taches en fonction d'évènements ****/
 	
 	// attribut image pour uploader l'image.
@@ -113,8 +115,6 @@ class Billet
 			return;
 		}
 
-			
-		
 		// initialisation attribut photo avec le nom du fichier
 		$this->photo = $this->image->getClientOriginalName();
 	}
