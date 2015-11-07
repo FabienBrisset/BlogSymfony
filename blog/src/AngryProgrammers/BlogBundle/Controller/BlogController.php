@@ -24,7 +24,7 @@ class BlogController extends Controller
         return $this->render('AngryProgrammersBlogBundle:Blog:admin.html.twig');
     }
 	
-	//se reporter à "http://localhost:8000/ajoutBillet" (droit réservé à l'admin uniquement)
+	//se reporter à "http://localhost:8000/admin/ajoutBillet" (droit réservé à l'admin uniquement)
 	public function ajoutBilletAction(Request $request)
 	{
 		$billet = new Billet();

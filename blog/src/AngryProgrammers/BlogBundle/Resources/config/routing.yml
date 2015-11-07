@@ -11,5 +11,5 @@ angry_programmers_blog_admin:
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:admin }
 
 angry_programmers_blog_ajoutBillet:
-    path: /ajoutBillet
+    path: /admin/ajoutBillet
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:ajoutBillet }
