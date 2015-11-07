@@ -11,7 +11,19 @@ class BlogController extends Controller
 {
     public function indexAction()
     {
-        return $this->render('AngryProgrammersBlogBundle:Blog:index.html.twig');
+		//rend la liste des billets
+		$em = $this->getDoctrine()->getManager(); 
+		$listeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
+		
+		if (count($listeBillet) > 0)
+		{
+			return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet));
+		}
+		else
+		{
+			return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+		}
+		
     }
 	
 	public function postAction($id)
@@ -40,7 +52,7 @@ class BlogController extends Controller
 			$billet->setAuteur($this->getUser());
 			//obtenir la date courante			
 			$billet->setDate(new \Datetime());
-			//création du slug
+			//création du slug (il faudra gérer les possibles doublons)
 			$billet->setSlug(str_replace(' ', '_', $billet->getTitre()));
 			
 			$em = $this->getDoctrine()->getManager();
@@ -54,4 +66,5 @@ class BlogController extends Controller
 
 		return $this->render('AngryProgrammersBlogBundle:Blog:ajoutBillet.html.twig', array('form' => $form->createView()));
 	}
+	
 }

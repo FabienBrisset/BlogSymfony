@@ -104,6 +104,10 @@ class Billet
 		return __DIR__.'/../../../../web/'.$this->getUploadDir();
 	}
 	
+	public function getPhotoUploadDir() {
+        return 'uploads/img';
+    }
+	
 	/**
 	* @ORM\PrePersist()
 	* @ORM\PreUpdate()
