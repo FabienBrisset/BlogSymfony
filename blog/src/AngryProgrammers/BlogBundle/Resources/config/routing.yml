@@ -13,3 +13,11 @@ angry_programmers_blog_admin:
 angry_programmers_blog_ajoutBillet:
     path: /admin/ajoutBillet
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:ajoutBillet }
+
+angry_programmers_blog_modifierBillet:
+    path: /admin/modifierBillet/{id}
+    defaults: { _controller: AngryProgrammersBlogBundle:Blog:modifierBillet }
+
+angry_programmers_blog_supprimerBillet:
+    path: /admin/supprimerBillet/{id}
+    defaults: { _controller: AngryProgrammersBlogBundle:Blog:supprimerBillet }

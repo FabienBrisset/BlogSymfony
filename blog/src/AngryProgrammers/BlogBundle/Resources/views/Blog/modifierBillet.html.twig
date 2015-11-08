@@ -1,0 +1,9 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block contenu %}
+*Si vous ne chargez pas d'image l'ancienne sera conservée.
+{{ form_start(form) }}
+{{ form_widget(form) }}
+{{ form_end(form) }}
+{% endblock %}
+
