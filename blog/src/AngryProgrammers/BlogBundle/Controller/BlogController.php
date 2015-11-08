@@ -64,6 +64,7 @@ class BlogController extends Controller
 	public function ajoutBilletAction(Request $request)
 	{
 		$billet = new Billet();
+		$user = $this->getUser();
 
 		//instanciation de l'objet formulaire dans lequel on ajoute le bouton submit d'ajout du billet
 		$form = $this->createForm(new BilletType(), $billet)
@@ -88,13 +89,14 @@ class BlogController extends Controller
 			return $this->redirect($this->generateUrl('angry_programmers_blog_admin'));
 		}
 
-		return $this->render('AngryProgrammersBlogBundle:Blog:ajoutBillet.html.twig', array('form' => $form->createView()));
+		return $this->render('AngryProgrammersBlogBundle:Blog:ajoutBillet.html.twig', array('form' => $form->createView(), "user" => $user));
 	}
 	
 	//se reporter à "http://localhost:8000/admin/modifierBillet" (droit réservé à l'admin uniquement)
 	public function modifierBilletAction(Request $request, $id)
 	{
 		$em = $this->getDoctrine()->getManager(); 
+		$user = $this->getUser();
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
 
 		//instanciation de l'objet formulaire dans lequel on ajoute le bouton submit d'ajout du billet
@@ -120,7 +122,7 @@ class BlogController extends Controller
 			return $this->redirect($this->generateUrl('angry_programmers_blog_admin'));
 		}
 
-		return $this->render('AngryProgrammersBlogBundle:Blog:modifierBillet.html.twig', array('form' => $form->createView()));
+		return $this->render('AngryProgrammersBlogBundle:Blog:modifierBillet.html.twig', array('form' => $form->createView(), "user" => $user));
 	}
 	
 	//se reporter à "http://localhost:8000/admin/supprimerBillet" (droit réservé à l'admin uniquement)
