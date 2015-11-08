@@ -46,15 +46,17 @@ class BlogController extends Controller
     {
         //rend la liste des billets
 		$em = $this->getDoctrine()->getManager(); 
+		$user = $this->getUser();
 		$listeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
+		
 		
 		if (count($listeBillet) > 0)
 		{
-			return $this->render("AngryProgrammersBlogBundle:Blog:admin.html.twig",array("liste" => $listeBillet));
+			return $this->render("AngryProgrammersBlogBundle:Blog:admin.html.twig",array("liste" => $listeBillet, "user" => $user));
 		}
 		else
 		{
-			return $this->render("AngryProgrammersBlogBundle:Blog:admin.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+			return $this->render("AngryProgrammersBlogBundle:Blog:admin.html.twig",array("listeVide" => "Il n'y a pas d'article disponible", "user" => user));
 		}
     }
 	
