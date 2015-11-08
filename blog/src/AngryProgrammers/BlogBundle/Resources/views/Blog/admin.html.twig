@@ -10,12 +10,13 @@
 				
 				<!-- Blog Entries Column -->
 				<div class="col-md-8">
-					<h2>{{cpt}} |
+					<h3>{{cpt}} |
 						<a href="http://127.0.0.1/post/{{". billet.id ."}}">{{ billet.titre }} </a> |
 						<span class="glyphicon glyphicon-time"></span> Posté le {{ billet.date|date('d/m/Y')}} |
-						{{billet.contenu|slice(0, 50)}} |
-						<a class="btn btn-primary" href="http://127.0.0.1:8000/post/{{billet.id}}" target = "blank">En lire plus <span class="glyphicon glyphicon-chevron-right"></span></a>
-					</h2>
+						{{billet.contenu|slice(0, 50)}} | </h3>
+						<a class="btn btn-primary" href="http://127.0.0.1:8000/post/{{billet.id}}" target = "blank">Voir en détail <span class="glyphicon glyphicon-chevron-right"></span></a>
+						<a class="btn btn-info" href="http://127.0.0.1:8000/admin/modifierBillet/{{billet.id}}" target = "blank">Modifier <span class="glyphicon glyphicon-chevron-right"></span></a>
+						<a class="btn btn-danger" href="http://127.0.0.1:8000/admin/supprimerBillet/{{billet.id}}" target = "blank">Supprimer <span class="glyphicon glyphicon-chevron-right"></span></a>
 					<hr>
 
 				</div>
