@@ -1,4 +1,4 @@
-{% extends "FOSUserBundle::layout.html.twig" %}
+{% extends "FOSUserBundle::baseFOS.html.twig" %}
 
 {% trans_default_domain 'FOSUserBundle' %}
 
@@ -42,7 +42,7 @@
 	<div class="container">
 
 		<h2>
-			Connectez-vous ! :
+			Connectez-vous !
 		</h2>
 
 		<form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
