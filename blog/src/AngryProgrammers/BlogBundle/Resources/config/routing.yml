@@ -3,7 +3,7 @@ angry_programmers_blog_homepage:
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:index }
 
 angry_programmers_blog_post:
-    path: /post/{id}
+    path: /post/{slug}
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:post }
 
 angry_programmers_blog_admin:

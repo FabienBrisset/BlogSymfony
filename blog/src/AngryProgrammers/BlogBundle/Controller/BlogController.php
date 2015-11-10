@@ -16,6 +16,8 @@ class BlogController extends Controller
 		$listeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
 		$user = $this->getUser();
 		
+		$listeVide = "Aucun article n'a été publié !";
+		
 		if ($user != NULL) {
 			if (count($listeBillet) > 0)
 			{
@@ -23,7 +25,7 @@ class BlogController extends Controller
 			}
 			else
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Il n'y a pas d'article disponible", "user" => $user));
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => $listeVide, "user" => $user));
 			}
 		}
 		else {
@@ -33,17 +35,22 @@ class BlogController extends Controller
 			}
 			else
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => $listeVide));
 			}
 		}
     }
 	
-	public function postAction($id)
+	public function postAction($slug)
     {
 		//rend la liste des billets
-		$em = $this->getDoctrine()->getManager(); 
+		$em = $this->getDoctrine()->getManager();
+		$array = split("_",$slug);
+		$id = $array[0];
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
+		
 		$user = $this->getUser();
+		
+		$listeVide = "Aucun article n'a été publié !";
 		
 		if ($user != NULL) {
 			if (count($billet) > 0)
@@ -52,7 +59,7 @@ class BlogController extends Controller
 			}
 			else
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => "Il n'y a pas d'article disponible", "user" => $user));
+				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => $listeVide, "user" => $user));
 			}
 		}
 		else {
@@ -62,7 +69,7 @@ class BlogController extends Controller
 			}
 			else
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => $listeVide));
 			}
 		}
     }
@@ -74,6 +81,7 @@ class BlogController extends Controller
 		$user = $this->getUser();
 		$listeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
 		
+		$listeVide = "Aucun article n'a été publié !";
 		
 		if (count($listeBillet) > 0)
 		{
@@ -81,7 +89,7 @@ class BlogController extends Controller
 		}
 		else
 		{
-			return $this->render("AngryProgrammersBlogBundle:Blog:admin.html.twig",array("listeVide" => "Il n'y a pas d'article disponible", "user" => user));
+			return $this->render("AngryProgrammersBlogBundle:Blog:admin.html.twig",array("listeVide" => $listeVide, "user" => $user));
 		}
     }
 	
@@ -102,13 +110,14 @@ class BlogController extends Controller
 			$billet->setAuteur($this->getUser());
 			//obtenir la date courante			
 			$billet->setDate(new \Datetime());
+			$billet->setModifie(false);
 			//création du slug (il faudra gérer les possibles doublons)
-			$billet->setSlug(str_replace(' ', '_', $billet->getTitre()));
+			$billet->setSlug(strtr(str_replace(' ', '_', $billet->getTitre()),'@ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ','aAAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy'));
 			
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($billet);
 			$em->flush();
-
+			
 			$request->getSession()->getFlashBag()->add('notice', 'Billet bien enregistré.');
 
 			return $this->redirect($this->generateUrl('angry_programmers_blog_admin'));
@@ -136,7 +145,7 @@ class BlogController extends Controller
 			//obtenir la date courante			
 			$billet->setDate(new \Datetime());
 			//création du slug (il faudra gérer les possibles doublons)
-			$billet->setSlug(str_replace(' ', '_', $billet->getTitre()));
+			$billet->setSlug(strtr(str_replace(' ', '_', $billet->getTitre()),'@ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ','aAAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy'));
 			$billet->setModifie(true);
 			
 			$em = $this->getDoctrine()->getManager();

@@ -18,7 +18,7 @@
 							<span class="glyphicon glyphicon-time"></span> Modifié le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}} | 
 						{% endif %}
 						{{billet.contenu|slice(0, 50)}}</h3>
-						<a class="btn btn-primary" href="/post/{{billet.id}}" target = "blank">Voir en détail <span class="glyphicon glyphicon-chevron-right"></span></a>
+						<a class="btn btn-primary" href="/post/{{billet.id ~ "_" ~ billet.slug}}" target = "blank">Voir en détail <span class="glyphicon glyphicon-chevron-right"></span></a>
 						<a class="btn btn-info" href="/admin/modifierBillet/{{billet.id}}">Modifier <span class="glyphicon glyphicon-chevron-right"></span></a>
 						<a class="btn btn-danger" href="/admin/supprimerBillet/{{billet.id}}">Supprimer <span class="glyphicon glyphicon-chevron-right"></span></a>
 					<hr>
@@ -31,7 +31,7 @@
 		<!-- si pas de liste, on affiche un message indiquant qu'il n'y a pas de billets -->
 		{% if listeVide is defined %}
 			<p class="lead">
-				listeVide
+				{{listeVide}}
 			</p>
 		{% endif %}
 {% endblock %}
