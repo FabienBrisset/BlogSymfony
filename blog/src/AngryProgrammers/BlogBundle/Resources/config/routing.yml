@@ -23,5 +23,5 @@ angry_programmers_blog_supprimerBillet:
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:supprimerBillet }
 
 angry_programmers_blog_likeBillet:
-    path: /admin/likeBillet/{id}
+    path: /likeBillet/{id}
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:likeBillet }

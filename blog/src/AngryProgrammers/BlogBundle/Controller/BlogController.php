@@ -55,7 +55,17 @@ class BlogController extends Controller
 		if ($user != NULL) {
 			if (count($billet) > 0)
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "user" => $user));
+				$likeBillet = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $billet, 'auteur' => $user));
+				$nbLikeBillet = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $billet)));
+				
+				if ($likeBillet == NULL)
+				{
+					return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "user" => $user, "nbLikeBillet" => $nbLikeBillet));
+				}
+				else
+				{
+					return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "user" => $user, "likeBillet" => $likeBillet, "nbLikeBillet" => $nbLikeBillet));
+				}
 			}
 			else
 			{
@@ -181,7 +191,9 @@ class BlogController extends Controller
 		$user = $this->getUser();
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);
 		
-		$likeBillet = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet_id' => $id, 'auteur_id' => $user->getId()));
+		$likeBillet = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findOneBy(array('billet' => $billet, 'auteur' => $user));
+		
+		//exit(dump($likeBillet));
 		
 		// si l'utilisateur n'a pas encore aimé le billet et qu'il l'aime
 		if ($likeBillet == NULL)
@@ -193,19 +205,19 @@ class BlogController extends Controller
 			$em->persist($likeBillet);
 			$em->flush();
 			
-			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "likeBillet" => $likeBillet));
+			$nbLikeBillet = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $billet)));
+			
+			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "likeBillet" => $likeBillet, "nbLikeBillet" => $nbLikeBillet));
 		}
 		else //sinon si il a aimé et qu'il ne l'aime plus 
 		{
 			$em->remove($likeBillet);
 			$em->flush();
 			
-			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "likeBillet" => NULL));
+			$nbLikeBillet = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $billet)));
+			
+			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "nbLikeBillet" => $nbLikeBillet));
 		}
-		
-
-		//$request->getSession()->getFlashBag()->add('notice', 'Billet bien supprimé.');
-
 		
 	}
 }

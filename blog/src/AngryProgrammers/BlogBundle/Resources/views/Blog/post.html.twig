@@ -25,6 +25,21 @@
 				<p>{{billet.contenu}}</p>
 
 				<hr>
+				{% if app.user %}
+					{% if nbLikeBillet == 0 %}
+						<p>Soyez la première a aimé ça</p>
+					{% elseif nbLikeBillet == 1 %}
+						<p>{{nbLikeBillet}} personne aime ça</p>
+					{% else %}
+						<p>{{nbLikeBillet}} personnes aiment ça</p>
+					{% endif %}
+
+					{% if likeBillet is defined %}
+						<a class="btn btn-danger" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-down"></span> Je n'aime plus</a>
+					{% else %}
+						<a class="btn btn-success" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-up"></span> J'aime</a>
+					{% endif %}
+				{% endif %}
 			</div>
 		{% endif %}
             
