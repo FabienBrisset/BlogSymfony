@@ -4,6 +4,7 @@ namespace AngryProgrammers\BlogBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use AngryProgrammers\BlogBundle\Entity\Billet;
+use AngryProgrammers\BlogBundle\Entity\LikeBillet;
 use AngryProgrammers\BlogBundle\Form\BilletType;
 use Symfony\Component\HttpFoundation\Request;
 
@@ -42,7 +43,6 @@ class BlogController extends Controller
 	
 	public function postAction($slug)
     {
-		//rend la liste des billets
 		$em = $this->getDoctrine()->getManager();
 		$array = explode("_",$slug);
 		$id = $array[0];
@@ -166,12 +166,46 @@ class BlogController extends Controller
 		$em = $this->getDoctrine()->getManager(); 
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
 			
-		$em = $this->getDoctrine()->getManager();
 		$em->remove($billet);
 		$em->flush();
 
 		$request->getSession()->getFlashBag()->add('notice', 'Billet bien supprimé.');
 
 		return $this->redirect($this->generateUrl('angry_programmers_blog_admin'));
+	}
+	
+	public function likeBilletAction(Request $request, $id)
+	{
+		$em = $this->getDoctrine()->getManager();   
+		
+		$user = $this->getUser();
+		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);
+		
+		$likeBillet = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet_id' => $id, 'auteur_id' => $user->getId()));
+		
+		// si l'utilisateur n'a pas encore aimé le billet et qu'il l'aime
+		if ($likeBillet == NULL)
+		{
+			$likeBillet = new LikeBillet();
+			$likeBillet->setAuteur($user);
+			$likeBillet->setBillet($billet);
+		
+			$em->persist($likeBillet);
+			$em->flush();
+			
+			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "likeBillet" => $likeBillet));
+		}
+		else //sinon si il a aimé et qu'il ne l'aime plus 
+		{
+			$em->remove($likeBillet);
+			$em->flush();
+			
+			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "likeBillet" => NULL));
+		}
+		
+
+		//$request->getSession()->getFlashBag()->add('notice', 'Billet bien supprimé.');
+
+		
 	}
 }
