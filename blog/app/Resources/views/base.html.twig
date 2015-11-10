@@ -53,13 +53,24 @@
                         <a href="/login">Se Connecter</a>
                     </li>
                     <li>
-                        <a href="/register">S'enregistrer</a>
+                        <a href="/register">S'inscrire</a>
                     </li>
                     <li>
                         <a href="#">Nous contacter</a>
                     </li>
                 </ul>
+				<ul class="nav navbar-right top-nav">
+					<li>
+						<a href="/logout"><i class="fa fa-fw fa-power-off"></i> Déconnexion</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-right top-nav">
+					<li>
+						<a> {{ user }}</a>
+					</li>
+				</ul>
             </div>
+			
             <!-- /.navbar-collapse -->
         </div>
         <!-- /.container -->

@@ -12,7 +12,11 @@
 					<a href="#">{{ billet.titre }}</a>
 				</h2>
 				
-				<p><span class="glyphicon glyphicon-time"></span> Posté le {{ billet.date|date('d/m/Y')}}</p>
+				{% if billet.modifie == false %}
+					<p><span class="glyphicon glyphicon-time"></span> Posté le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}}</p>
+				{% else %}
+					<p><span class="glyphicon glyphicon-time"></span> Modifié le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}}</p>
+				{% endif %}
 				<hr>
 					<img class="img-responsive" src={{asset(billet.getPhotoUploadDir) ~ '/' ~ billet.id ~ '_' ~ billet.photo}} alt="">
 				<hr>

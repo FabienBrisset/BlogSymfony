@@ -14,16 +14,28 @@ class BlogController extends Controller
 		//rend la liste des billets
 		$em = $this->getDoctrine()->getManager(); 
 		$listeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
+		$user = $this->getUser();
 		
-		if (count($listeBillet) > 0)
-		{
-			return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet));
+		if ($user != null) {
+			if (count($listeBillet) > 0)
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user));
+			}
+			else
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Il n'y a pas d'article disponible", "user" => $user));
+			}
 		}
-		else
-		{
-			return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+		else {
+			if (count($listeBillet) > 0)
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet));
+			}
+			else
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+			}
 		}
-		
     }
 	
 	public function postAction($id)
@@ -31,14 +43,27 @@ class BlogController extends Controller
 		//rend la liste des billets
 		$em = $this->getDoctrine()->getManager(); 
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
+		$user = $this->getUser();
 		
-		if (count($billet) > 0)
-		{
-			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet));
+		if ($user != null) {
+			if (count($billet) > 0)
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "user" => $user));
+			}
+			else
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => "Il n'y a pas d'article disponible", "user" => $user));
+			}
 		}
-		else
-		{
-			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+		else {
+			if (count($billet) > 0)
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet));
+			}
+			else
+			{
+				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => "Il n'y a pas d'article disponible"));
+			}
 		}
     }
 
@@ -112,6 +137,7 @@ class BlogController extends Controller
 			$billet->setDate(new \Datetime());
 			//création du slug (il faudra gérer les possibles doublons)
 			$billet->setSlug(str_replace(' ', '_', $billet->getTitre()));
+			$billet->setModifie(true);
 			
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($billet);

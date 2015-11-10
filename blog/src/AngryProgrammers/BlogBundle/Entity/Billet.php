@@ -64,6 +64,13 @@ class Billet
      */
     private $auteur;
 	
+	/**
+     * @var boolean
+     *
+     * @ORM\Column(name="modifie", type="boolean")
+     */
+	private $modifie;
+	
 	
 	
 	/*** UPLOAD IMAGE : Choix d'automatisation des taches en fonction d'évènements ****/
@@ -320,5 +327,29 @@ class Billet
     public function getAuteur()
     {
         return $this->auteur;
+    }
+
+    /**
+     * Set modifie
+     *
+     * @param boolean $modifie
+     *
+     * @return Billet
+     */
+    public function setModifie($modifie)
+    {
+        $this->modifie = $modifie;
+    
+        return $this;
+    }
+
+    /**
+     * Get modifie
+     *
+     * @return boolean
+     */
+    public function getModifie()
+    {
+        return $this->modifie;
     }
 }
