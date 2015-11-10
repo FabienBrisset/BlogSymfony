@@ -81,6 +81,12 @@ class Billet
 	// On ajoute cet attribut pour y stocker le nom de la photo temporairement
 	private $tempPhoto;
 	
+	//Permet de vérifier si la photo existe
+	public function fileExists()
+	{
+		return file_exists($this->getUploadRootDir().'/'.$this->id.'_'.$this->photo);
+	}
+	
 	public function getImage()
 	{
 		return $this->image;
@@ -233,6 +239,7 @@ class Billet
         return $this->slug;
     }
 	
+	//Permet de 'slugifier' la chaine afin de pouvoir l'ajouter en URL 
 	public function slugify($text)
 	{
 		// replace non letter or digits by -

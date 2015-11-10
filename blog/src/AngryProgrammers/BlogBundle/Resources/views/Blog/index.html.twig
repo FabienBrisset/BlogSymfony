@@ -18,8 +18,12 @@
 					{% else %}
 						<p><span class="glyphicon glyphicon-time"></span> Modifié le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}}</p>
 					{% endif %}
-					<hr>
+					
+					{% if billet.fileExists %}
+						<hr>
 						<img class="img-responsive" src={{asset(billet.getPhotoUploadDir) ~ '/' ~ billet.id ~ '_' ~ billet.photo}} alt="">
+					{% endif %}
+						
 					<hr>
 					<p>{{billet.contenu|slice(0, 100) ~ '...'}}</p>
 					<a class="btn btn-primary" href="/post/{{billet.id ~ "-" ~ billet.slug}}">En lire plus <span class="glyphicon glyphicon-chevron-right"></span></a>

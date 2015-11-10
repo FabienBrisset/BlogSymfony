@@ -17,8 +17,10 @@
 				{% else %}
 					<p><span class="glyphicon glyphicon-time"></span> Modifié le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}}</p>
 				{% endif %}
-				<hr>
-					<img class="img-responsive" src={{asset(billet.getPhotoUploadDir) ~ '/' ~ billet.id ~ '_' ~ billet.photo}} alt="">
+				{% if billet.fileExists %}
+						<hr>
+						<img class="img-responsive" src={{asset(billet.getPhotoUploadDir) ~ '/' ~ billet.id ~ '_' ~ billet.photo}} alt="">
+				{% endif %}
 				<hr>
 				<p>{{billet.contenu}}</p>
 
