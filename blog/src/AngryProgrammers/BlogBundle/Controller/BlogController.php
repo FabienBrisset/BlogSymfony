@@ -44,7 +44,7 @@ class BlogController extends Controller
     {
 		//rend la liste des billets
 		$em = $this->getDoctrine()->getManager();
-		$array = split("_",$slug);
+		$array = explode("_",$slug);
 		$id = $array[0];
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
 		
@@ -112,7 +112,7 @@ class BlogController extends Controller
 			$billet->setDate(new \Datetime());
 			$billet->setModifie(false);
 			//création du slug (il faudra gérer les possibles doublons)
-			$billet->setSlug(strtr(str_replace(' ', '_', $billet->getTitre()),'@ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ','aAAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy'));
+			$billet->setSlug($billet->slugify($billet->getTitre()));
 			
 			$em = $this->getDoctrine()->getManager();
 			$em->persist($billet);
@@ -145,7 +145,7 @@ class BlogController extends Controller
 			//obtenir la date courante			
 			$billet->setDate(new \Datetime());
 			//création du slug (il faudra gérer les possibles doublons)
-			$billet->setSlug(strtr(str_replace(' ', '_', $billet->getTitre()),'@ÀÁÂÃÄÅÇÈÉÊËÌÍÎÏÒÓÔÕÖÙÚÛÜÝàáâãäåçèéêëìíîïðòóôõöùúûüýÿ','aAAAAAACEEEEIIIIOOOOOUUUUYaaaaaaceeeeiiiioooooouuuuyy'));
+			$billet->setSlug($billet->slugify($billet->getTitre()));
 			$billet->setModifie(true);
 			
 			$em = $this->getDoctrine()->getManager();

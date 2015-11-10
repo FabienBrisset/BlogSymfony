@@ -22,7 +22,7 @@
 						<img class="img-responsive" src={{asset(billet.getPhotoUploadDir) ~ '/' ~ billet.id ~ '_' ~ billet.photo}} alt="">
 					<hr>
 					<p>{{billet.contenu|slice(0, 100) ~ '...'}}</p>
-					<a class="btn btn-primary" href="/post/{{billet.id ~ "_" ~ billet.slug}}">En lire plus <span class="glyphicon glyphicon-chevron-right"></span></a>
+					<a class="btn btn-primary" href="/post/{{billet.id ~ "-" ~ billet.slug}}">En lire plus <span class="glyphicon glyphicon-chevron-right"></span></a>
 
 					<hr>
 
