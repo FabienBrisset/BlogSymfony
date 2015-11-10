@@ -16,7 +16,7 @@ class BlogController extends Controller
 		$listeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
 		$user = $this->getUser();
 		
-		if ($user != null) {
+		if ($user != NULL) {
 			if (count($listeBillet) > 0)
 			{
 				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user));
@@ -45,7 +45,7 @@ class BlogController extends Controller
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
 		$user = $this->getUser();
 		
-		if ($user != null) {
+		if ($user != NULL) {
 			if (count($billet) > 0)
 			{
 				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "user" => $user));
