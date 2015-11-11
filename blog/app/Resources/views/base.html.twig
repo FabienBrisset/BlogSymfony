@@ -62,14 +62,12 @@
                     </li>
                 </ul>
 				{% if user is defined %}
-					<ul class="nav navbar-right top-nav">
+					<ul class="nav navbar-nav navbar-right">
+                        <li>
+                            <a> {{ user }}</a>
+                        </li>
 						<li>
 							<a href="/logout"><i class="fa fa-fw fa-power-off"></i> Déconnexion</a>
-						</li>
-					</ul>
-					<ul class="nav navbar-right top-nav">
-						<li>
-							<a> {{ user }}</a>
 						</li>
 					</ul>
 				{% endif %}
