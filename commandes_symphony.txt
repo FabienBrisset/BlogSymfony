@@ -14,6 +14,9 @@ Entrée
 php composer.phar self-update
 
 
+php app/console cache:clear -e prod
+
+
 php app/console doctrine:schema:update --dump-sql
 
 php app/console doctrine:schema:update --force
