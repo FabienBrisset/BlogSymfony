@@ -193,7 +193,7 @@ class BlogController extends Controller
 		
 		$likeBillet = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findOneBy(array('billet' => $billet, 'auteur' => $user));
 		
-		//exit(dump($likeBillet));
+		$slug = $billet->getId().'-'.$billet->getSlug();
 		
 		// si l'utilisateur n'a pas encore aimé le billet et qu'il l'aime
 		if ($likeBillet == NULL)
@@ -204,20 +204,13 @@ class BlogController extends Controller
 		
 			$em->persist($likeBillet);
 			$em->flush();
-			
-			$nbLikeBillet = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $billet)));
-			
-			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "likeBillet" => $likeBillet, "nbLikeBillet" => $nbLikeBillet));
 		}
 		else //sinon si il a aimé et qu'il ne l'aime plus 
 		{
 			$em->remove($likeBillet);
 			$em->flush();
-			
-			$nbLikeBillet = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $billet)));
-			
-			return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "nbLikeBillet" => $nbLikeBillet));
 		}
 		
+		return $this->redirect('/post/'.$slug);
 	}
 }
