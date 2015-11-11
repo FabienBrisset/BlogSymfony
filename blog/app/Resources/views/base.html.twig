@@ -49,12 +49,14 @@
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
+                {% if user is not defined %}
                     <li>
                         <a href="/login">Se Connecter</a>
                     </li>
                     <li>
                         <a href="/register">S'inscrire</a>
                     </li>
+                {% endif %}
                     <li>
                         <a href="#">Nous contacter</a>
                     </li>
