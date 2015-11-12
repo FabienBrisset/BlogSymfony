@@ -10,17 +10,17 @@ angry_programmers_blog_admin:
     path: /admin
     defaults: { _controller: AngryProgrammersBlogBundle:Blog:admin }
 
-angry_programmers_blog_ajoutBillet:
+angry_programmers_crud_ajoutBillet:
     path: /admin/ajoutBillet
-    defaults: { _controller: AngryProgrammersBlogBundle:Blog:ajoutBillet }
+    defaults: { _controller: AngryProgrammersBlogBundle:Crud:ajoutBillet }
 
-angry_programmers_blog_modifierBillet:
+angry_programmers_crud_modifierBillet:
     path: /admin/modifierBillet/{id}
-    defaults: { _controller: AngryProgrammersBlogBundle:Blog:modifierBillet }
+    defaults: { _controller: AngryProgrammersBlogBundle:Crud:modifierBillet }
 
-angry_programmers_blog_supprimerBillet:
+angry_programmers_crud_supprimerBillet:
     path: /admin/supprimerBillet/{id}
-    defaults: { _controller: AngryProgrammersBlogBundle:Blog:supprimerBillet }
+    defaults: { _controller: AngryProgrammersBlogBundle:Crud:supprimerBillet }
 
 angry_programmers_blog_likeBillet:
     path: /likeBillet/{id}
