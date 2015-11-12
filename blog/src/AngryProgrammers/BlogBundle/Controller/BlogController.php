@@ -69,9 +69,14 @@ class BlogController extends Controller
 	public function postAction($slug)
     {
 		$em = $this->getDoctrine()->getManager();
-		$array = explode("_",$slug);
+		$array = explode("-", $slug);
 		$id = $array[0];
+		$slugWithoutFirstTwoCaracters = substr($slug, 2);
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
+		
+		if ($slugWithoutFirstTwoCaracters != $billet->getSlug()) {
+			return $this->redirect($this->generateUrl('angry_programmers_blog_homepage'));
+		}
 		
 		$user = $this->getUser();
 		
@@ -94,7 +99,7 @@ class BlogController extends Controller
 			}
 			else
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => $listeVide, "user" => $user));
+				return $this->redirect($this->generateUrl('angry_programmers_blog_homepage'));
 			}
 		}
 		else {
@@ -104,7 +109,7 @@ class BlogController extends Controller
 			}
 			else
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("listeVide" => $listeVide));
+				return $this->redirect($this->generateUrl('angry_programmers_blog_homepage'));
 			}
 		}
     }
@@ -128,7 +133,7 @@ class BlogController extends Controller
 		}
     }
 	
-	public function likeBilletAction(Request $request, $id)
+	public function likeAction(Request $request, $id)
 	{
 		$em = $this->getDoctrine()->getManager();   
 		
