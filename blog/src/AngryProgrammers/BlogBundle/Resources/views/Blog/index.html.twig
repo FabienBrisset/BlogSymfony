@@ -9,10 +9,10 @@
 			{% for billet in liste %}
 			
 				<!-- Blog Entries Column -->
-				<div class="col-md-8">
+				<div class="col-md-8 well">
 
 					<h2>
-						<a href="#">{{ billet.titre }}</a>
+						<a href="/post/{{billet.id ~ "-" ~ billet.slug}}">{{ billet.titre }}</a>
 					</h2>
 					{% if billet.modifie == false %}
 						<p><span class="glyphicon glyphicon-time"></span> Posté le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}}</p>
@@ -21,32 +21,50 @@
 					{% endif %}
 					
 					{% if billet.fileExists %}
-						<hr>
+						<br>
 						<img class="img-responsive" src={{asset(billet.getPhotoUploadDir) ~ '/' ~ billet.id ~ '_' ~ billet.photo}} alt="">
 					{% endif %}
 						
-					<hr>
+					<br>
 					<p>{{billet.contenu|slice(0, 100) ~ '...'}}</p>
-					<a class="btn btn-primary" href="/post/{{billet.id ~ "-" ~ billet.slug}}">En lire plus <span class="glyphicon glyphicon-chevron-right"></span></a>
 					<hr>
-					{% if user is defined %}
+					<a class="btn btn-primary" href="/post/{{billet.id ~ "-" ~ billet.slug}}">En lire plus <span class="glyphicon glyphicon-chevron-right"></span></a>
+					
+					{% if nbLikeBillet is defined %}
+						<br><br>
 						{% if nbLikeBillet[i] == 0 %}
-							<p>Soyez la première personne à aimer ça</p>
+							<p>Soyez la première personne à aimer ça.</p>
 						{% elseif nbLikeBillet[i] == 1 %}
-							<p>{{nbLikeBillet[i]}} personne aime ça</p>
+							<p>{{nbLikeBillet[i]}} personne aime ça.</p>
 						{% else %}
-							<p>{{nbLikeBillet[i]}} personnes aiment ça</p>
+							<p>{{nbLikeBillet[i]}} personnes aiment ça.</p>
 						{% endif %}
 
-						{% if likeBillet[i] is defined and likeBillet[i] is not null %}
-							<a class="btn btn-danger" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-down"></span> Je n'aime plus</a>
+						{% if user is defined %}
+							{% if likeBillet[i] is defined and likeBillet[i] is not null %}
+								<a class="btn btn-danger" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-down"></span> Je n'aime plus</a>
+							{% else %}
+								<a class="btn btn-success" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-up"></span> J'aime</a>
+							{% endif %}
 						{% else %}
-							<a class="btn btn-success" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-up"></span> J'aime</a>
+							<a class="btn btn-success" href="/login"><span class="glyphicon glyphicon-log-in"></span> Connectez-vous pour pouvoir liker ce billet</a>
 						{% endif %}
 					{% endif %}
-					<hr>
+					
 
 				</div>
+				{% if i == 0 %} 
+					<!-- Blog Sidebar Widgets Column -->
+					<div class="col-md-4">
+
+						<!-- Side Widget Well -->
+						<div class="well">
+							<h4>A propos ...</h4>
+							<p>Le blog de Fabien, Pierre et Axel.</p>
+						</div>
+
+					</div>
+				{% endif %}
 				{% set i = i + 1 %}
 			{% endfor %}
 		{% endif %}
@@ -57,17 +75,6 @@
 				{{listeVide}}
 			</p>
 		{% endif %}
-			
-            <!-- Blog Sidebar Widgets Column -->
-            <div class="col-md-4">
-
-                <!-- Side Widget Well -->
-                <div class="well">
-                    <h4>A propos ...</h4>
-                    <p>Le blog de Fabien, Pierre et Axel.</p>
-                </div>
-
-            </div>
 
         </div>
         <!-- /.row -->

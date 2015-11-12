@@ -18,13 +18,17 @@ class BlogController extends Controller
 		$user = $this->getUser();
 		
 		$listeVide = "Aucun article n'a été publié !";
+		$nbLikeBillet;
+		
+		for ($i = 0; $i < sizeOf($listeBillet); $i++) {
+			$nbLikeBillet[$i] = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $listeBillet[$i])));
+		}
 		
 		if ($user != NULL) 
 		{
 			if (count($listeBillet) > 0) 
 			{
 				$likeBillet;
-				$nbLikeBillet;
 				
 				for ($i = 0; $i < sizeOf($listeBillet); $i++) {
 					if ($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $listeBillet[$i], 'auteur' => $user)) != NULL) {
@@ -33,7 +37,6 @@ class BlogController extends Controller
 					else {
 						$likeBillet[$i] = NULL;
 					}
-					$nbLikeBillet[$i] = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $listeBillet[$i])));
 				}
 				
 				if ($likeBillet == NULL)
@@ -54,7 +57,7 @@ class BlogController extends Controller
 		{
 			if (count($listeBillet) > 0)
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet));
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "nbLikeBillet" => $nbLikeBillet));
 			}
 			else
 			{
@@ -73,12 +76,12 @@ class BlogController extends Controller
 		$user = $this->getUser();
 		
 		$listeVide = "Aucun article n'a été publié !";
+		$nbLikeBillet = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $billet)));
 		
 		if ($user != NULL) {
 			if (count($billet) > 0)
 			{
 				$likeBillet = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $billet, 'auteur' => $user));
-				$nbLikeBillet = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $billet)));
 				
 				if ($likeBillet == NULL)
 				{
@@ -97,7 +100,7 @@ class BlogController extends Controller
 		else {
 			if (count($billet) > 0)
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet));
+				return $this->render("AngryProgrammersBlogBundle:Blog:post.html.twig",array("billet" => $billet, "nbLikeBillet" => $nbLikeBillet));
 			}
 			else
 			{
@@ -233,6 +236,9 @@ class BlogController extends Controller
 			$em->flush();
 		}
 		
-		return $this->redirect('/post/'.$slug);
+		header("Pragma: no-cache");
+		$adrAppelante=$_SERVER['HTTP_REFERER'];
+		
+		return $this->redirect($adrAppelante);
 	}
 }

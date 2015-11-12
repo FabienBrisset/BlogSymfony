@@ -6,10 +6,10 @@
 		<!-- affichage de la liste des billets -->
 		{% if billet is defined %}
 			<!-- Blog Entries Column -->
-			<div class="col-md-8">
+			<div class="col-md-8 well">
 
 				<h2>
-					<a href="#">{{ billet.titre }}</a>
+					{{ billet.titre }}
 				</h2>
 				
 				{% if billet.modifie == false %}
@@ -18,26 +18,30 @@
 					<p><span class="glyphicon glyphicon-time"></span> Modifié le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}}</p>
 				{% endif %}
 				{% if billet.fileExists %}
-						<hr>
+						<br>
 						<img class="img-responsive" src={{asset(billet.getPhotoUploadDir) ~ '/' ~ billet.id ~ '_' ~ billet.photo}} alt="">
 				{% endif %}
-				<hr>
+				<br>
 				<p>{{billet.contenu}}</p>
 
 				<hr>
-				{% if app.user %}
+				{% if nbLikeBillet is defined %}
 					{% if nbLikeBillet == 0 %}
-						<p>Soyez la première personne à aimer ça</p>
+						<p>Soyez la première personne à aimer ça.</p>
 					{% elseif nbLikeBillet == 1 %}
-						<p>{{nbLikeBillet}} personne aime ça</p>
+						<p>{{nbLikeBillet}} personne aime ça.</p>
 					{% else %}
-						<p>{{nbLikeBillet}} personnes aiment ça</p>
+						<p>{{nbLikeBillet}} personnes aiment ça.</p>
 					{% endif %}
 
-					{% if likeBillet is defined %}
-						<a class="btn btn-danger" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-down"></span> Je n'aime plus</a>
+					{% if user is defined %}
+						{% if likeBillet is defined and likeBillet is not null %}
+							<a class="btn btn-danger" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-down"></span> Je n'aime plus</a>
+						{% else %}
+							<a class="btn btn-success" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-up"></span> J'aime</a>
+						{% endif %}
 					{% else %}
-						<a class="btn btn-success" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-up"></span> J'aime</a>
+						<a class="btn btn-success" href="/login"><span class="glyphicon glyphicon-log-in"></span> Connectez-vous pour pouvoir liker ce billet</a>
 					{% endif %}
 				{% endif %}
 			</div>
