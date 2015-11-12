@@ -135,10 +135,26 @@ class BlogController extends Controller
 	
 	public function likeAction(Request $request, $id)
 	{
-		$em = $this->getDoctrine()->getManager();   
+		$em = $this->getDoctrine()->getManager(); 
+
+		header("Pragma: no-cache");
+
+		if(isset($_SERVER['HTTP_REFERER'])) 
+		{
+        	$adrAppelante=$_SERVER['HTTP_REFERER']; 
+   		} 
+   		else
+   		{
+   			$adrAppelante = "/";
+   		}
 		
 		$user = $this->getUser();
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);
+
+		if($billet == NULL)
+		{
+			return $this->redirect($adrAppelante);
+		}
 		
 		$likeBillet = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findOneBy(array('billet' => $billet, 'auteur' => $user));
 		
@@ -159,9 +175,6 @@ class BlogController extends Controller
 			$em->remove($likeBillet);
 			$em->flush();
 		}
-		
-		header("Pragma: no-cache");
-		$adrAppelante=$_SERVER['HTTP_REFERER'];
 		
 		return $this->redirect($adrAppelante);
 	}

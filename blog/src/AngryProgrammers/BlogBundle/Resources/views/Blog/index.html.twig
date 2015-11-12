@@ -42,9 +42,9 @@
 
 						{% if user is defined %}
 							{% if likeBillet[i] is defined and likeBillet[i] is not null %}
-								<a class="btn btn-danger" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-down"></span> Je n'aime plus</a>
+								<a class="btn btn-danger" href="/like/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-down"></span> Je n'aime plus</a>
 							{% else %}
-								<a class="btn btn-success" href="/likeBillet/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-up"></span> J'aime</a>
+								<a class="btn btn-success" href="/like/{{billet.id}}"><span class="glyphicon glyphicon-thumbs-up"></span> J'aime</a>
 							{% endif %}
 						{% else %}
 							<a class="btn btn-success" href="/login"><span class="glyphicon glyphicon-log-in"></span> Connectez-vous pour pouvoir liker ce billet</a>
