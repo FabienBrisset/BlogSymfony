@@ -19,17 +19,39 @@ class BlogController extends Controller
 		
 		$listeVide = "Aucun article n'a été publié !";
 		
-		if ($user != NULL) {
-			if (count($listeBillet) > 0)
+		if ($user != NULL) 
+		{
+			if (count($listeBillet) > 0) 
 			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user));
+				$likeBillet;
+				$nbLikeBillet;
+				
+				for ($i = 0; $i < sizeOf($listeBillet); $i++) {
+					if ($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $listeBillet[$i], 'auteur' => $user)) != NULL) {
+						$likeBillet[$i] = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $listeBillet[$i], 'auteur' => $user));
+					}
+					else {
+						$likeBillet[$i] = NULL;
+					}
+					$nbLikeBillet[$i] = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $listeBillet[$i])));
+				}
+				
+				if ($likeBillet == NULL)
+				{
+					return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user, "nbLikeBillet" => $nbLikeBillet));
+				}
+				else
+				{
+					return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user, "likeBillet" => $likeBillet, "nbLikeBillet" => $nbLikeBillet));
+				}
 			}
 			else
 			{
 				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => $listeVide, "user" => $user));
 			}
 		}
-		else {
+		else 
+		{
 			if (count($listeBillet) > 0)
 			{
 				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet));
