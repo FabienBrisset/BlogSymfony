@@ -8,12 +8,12 @@
 			{% set i = 0 %}
 			{% for billet in liste %}
 			
-				<!-- Blog Entries Column -->
 				<div class="col-md-8 well">
 
 					<h2>
 						<a href="/post/{{billet.id ~ "-" ~ billet.slug}}">{{ billet.titre }}</a>
 					</h2>
+
 					{% if billet.modifie == false %}
 						<p><span class="glyphicon glyphicon-time"></span> Posté le {{ billet.date|date('d/m/Y')}} par {{billet.auteur.username}}</p>
 					{% else %}
@@ -49,15 +49,14 @@
 						{% else %}
 							<a class="btn btn-success" href="/login"><span class="glyphicon glyphicon-log-in"></span> Connectez-vous pour pouvoir liker ce billet</a>
 						{% endif %}
-					{% endif %}
-					
+					{% endif %}	
 
 				</div>
+
 				{% if i == 0 %} 
-					<!-- Blog Sidebar Widgets Column -->
+
 					<div class="col-md-4">
 
-						<!-- Side Widget Well -->
 						<div class="well">
 							<h4>A propos ...</h4>
 							<p>Le blog de Fabien, Pierre et Axel.</p>
@@ -77,5 +76,4 @@
 		{% endif %}
 
         </div>
-        <!-- /.row -->
 {% endblock %}
