@@ -10,58 +10,82 @@ use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends Controller
 {
-    public function indexAction()
+    public function indexAction($page = 1)
     {
+		if ($page == 0) {
+			$page = 1;
+		}
 		//rend la liste des billets
 		$em = $this->getDoctrine()->getManager(); 
-		$listeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
+		$resultListeBillet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findAll();   
 		$user = $this->getUser();
 		
 		$listeVide = "Aucun article n'a été publié !";
 		$nbLikeBillet;
 		
-		for ($i = 0; $i < sizeOf($listeBillet); $i++) {
-			$nbLikeBillet[$i] = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $listeBillet[$i])));
+		$nbPage = floor((sizeOf($resultListeBillet) - 1) / 10) + 1;
+		
+		$cptDixPremiersElements = 0;
+		
+		for ($i = ((10 * ($page)) - 10); $i < sizeOf($resultListeBillet); $i++) {
+			$listeBillet[$cptDixPremiersElements] = $resultListeBillet[$i];
+			$cptDixPremiersElements++;
+		}
+		
+		if (isset($listeBillet)) {
+			for ($i = 0; $i < sizeOf($listeBillet); $i++) {
+				$nbLikeBillet[$i] = count($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findByBillet(array('billet' => $listeBillet[$i])));
+			}
 		}
 		
 		if ($user != NULL) 
 		{
-			if (count($listeBillet) > 0) 
-			{
-				$likeBillet;
-				
-				for ($i = 0; $i < sizeOf($listeBillet); $i++) {
-					if ($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $listeBillet[$i], 'auteur' => $user)) != NULL) {
-						$likeBillet[$i] = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $listeBillet[$i], 'auteur' => $user));
-					}
-					else {
-						$likeBillet[$i] = NULL;
-					}
-				}
-				
-				if ($likeBillet == NULL)
+			if (isset($listeBillet)) {
+				if (count($listeBillet) > 0) 
 				{
-					return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user, "nbLikeBillet" => $nbLikeBillet));
+					$likeBillet;
+					
+					for ($i = 0; $i < sizeOf($listeBillet); $i++) {
+						if ($em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $listeBillet[$i], 'auteur' => $user)) != NULL) {
+							$likeBillet[$i] = $em->getRepository("AngryProgrammersBlogBundle:LikeBillet")->findBy(array('billet' => $listeBillet[$i], 'auteur' => $user));
+						}
+						else {
+							$likeBillet[$i] = NULL;
+						}
+					}
+					
+					if ($likeBillet == NULL)
+					{
+						return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user, "nbLikeBillet" => $nbLikeBillet, "activePage" => $page, "nbPages" => $nbPage));
+					}
+					else
+					{
+						return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user, "likeBillet" => $likeBillet, "nbLikeBillet" => $nbLikeBillet, "activePage" => $page, "nbPages" => $nbPage));
+					}
 				}
 				else
 				{
-					return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "user" => $user, "likeBillet" => $likeBillet, "nbLikeBillet" => $nbLikeBillet));
+					return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => $listeVide, "user" => $user));
 				}
 			}
-			else
-			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => $listeVide, "user" => $user));
+			else {
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Aucun article n'est présent sur cette page !", "user" => $user, "nbPages" => $nbPage));
 			}
 		}
 		else 
 		{
-			if (count($listeBillet) > 0)
-			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "nbLikeBillet" => $nbLikeBillet));
+			if (isset($listeBillet)) {
+				if (count($listeBillet) > 0)
+				{
+					return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("liste" => $listeBillet, "nbLikeBillet" => $nbLikeBillet, "activePage" => $page, "nbPages" => $nbPage));
+				}
+				else
+				{
+					return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => $listeVide));
+				}
 			}
-			else
-			{
-				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => $listeVide));
+			else {
+				return $this->render("AngryProgrammersBlogBundle:Blog:index.html.twig",array("listeVide" => "Aucun article n'est présent sur cette page !", "nbPages" => $nbPage));
 			}
 		}
     }

@@ -53,8 +53,7 @@
 
 				</div>
 
-				{% if i == 0 %} 
-
+				{% if i == 0 %} 		
 					<div class="col-md-4">
 
 						<div class="well">
@@ -66,12 +65,40 @@
 				{% endif %}
 				{% set i = i + 1 %}
 			{% endfor %}
+			<div class="col-md-8">
+				{% if nbPages is defined %}
+					<center>
+					<nav>
+						<ul class="pagination">
+							{% for i in 1..nbPages %}
+								{% if activePage == i %}
+									<li class = "active"><a href="/{{ i }}">{{ i }}</a></li>
+								{% else %}
+									<li><a href="/{{ i }}">{{ i }}</a></li>
+								{% endif %}
+							{% endfor %}
+						</ul>
+					</nav>
+					</center>
+				{% endif %}
+			</div>
 		{% endif %}
             
 		<!-- si pas de liste, on affiche un message indiquant qu'il n'y a pas de billets -->
 		{% if listeVide is defined %}
 			<p class="lead">
 				{{listeVide}}
+				{% if nbPages is defined %}
+					<center>
+					<nav>
+						<ul class="pagination">
+							{% for i in 1..nbPages %}
+									<li><a href="/{{ i }}">{{ i }}</a></li>
+							{% endfor %}
+						</ul>
+					</nav>
+					</center>
+				{% endif %}
 			</p>
 		{% endif %}
 
