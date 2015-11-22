@@ -92,9 +92,11 @@
 					<center>
 					<nav>
 						<ul class="pagination">
-							{% for i in 1..nbPages %}
-									<li><a href="/{{ i }}">{{ i }}</a></li>
-							{% endfor %}
+							{% if nbPages %}
+								{% for i in 1..nbPages %}
+										<li><a href="/{{ i }}">{{ i }}</a></li>
+								{% endfor %}
+							{% endif %}
 						</ul>
 					</nav>
 					</center>

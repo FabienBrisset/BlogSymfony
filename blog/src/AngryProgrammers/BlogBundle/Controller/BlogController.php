@@ -28,6 +28,8 @@ class BlogController extends Controller
 		$cptDixPremiersElements = 0;
 		
 		for ($i = ((10 * ($page)) - 10); $i < sizeOf($resultListeBillet); $i++) {
+			if ($cptDixPremiersElements == 10)
+				break;
 			$listeBillet[$cptDixPremiersElements] = $resultListeBillet[$i];
 			$cptDixPremiersElements++;
 		}
@@ -95,7 +97,15 @@ class BlogController extends Controller
 		$em = $this->getDoctrine()->getManager();
 		$array = explode("-", $slug);
 		$id = $array[0];
-		$slugWithoutFirstTwoCaracters = substr($slug, 2);
+		if ($id > 0 && $id < 10) {
+			$slugWithoutFirstTwoCaracters = substr($slug, 2);
+		}
+		else if ($id >= 10 && $id < 100) {
+			$slugWithoutFirstTwoCaracters = substr($slug, 3);
+		}
+		else if ($id >= 100 && $id < 1000) {
+			$slugWithoutFirstTwoCaracters = substr($slug, 4);
+		}
 		$billet = $em->getRepository("AngryProgrammersBlogBundle:Billet")->findOneById($id);   
 		
 		if ($slugWithoutFirstTwoCaracters != $billet->getSlug()) {
